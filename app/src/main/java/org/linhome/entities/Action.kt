@@ -21,7 +21,7 @@
 package org.linhome.entities
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import org.linhome.customisation.ActionTypes
 
 @Parcelize

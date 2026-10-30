@@ -26,9 +26,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.fragment_assistant_create_linhome.*
-import kotlinx.android.synthetic.main.fragment_assistant_create_linhome.view.*
-import kotlinx.android.synthetic.main.widget_round_rect_button.view.*
+import org.linhome.synthetic.fragment_assistant_create_linhome.*
+import org.linhome.synthetic.fragment_assistant_create_linhome.view.*
+import org.linhome.synthetic.widget_round_rect_button.view.*
 import org.linhome.R
 import org.linhome.customisation.Texts
 import org.linhome.databinding.FragmentAssistantCreateLinhomeBinding

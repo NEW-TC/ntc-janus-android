@@ -28,7 +28,7 @@ import android.widget.AdapterView
 import android.widget.LinearLayout
 import android.widget.Spinner
 import androidx.databinding.DataBindingUtil
-import kotlinx.android.synthetic.main.widget_spinner.view.*
+import org.linhome.synthetic.widget_spinner.view.*
 import org.linhome.R
 import org.linhome.customisation.Texts
 import org.linhome.databinding.WidgetSpinnerBinding

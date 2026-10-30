@@ -29,6 +29,8 @@ class LoginSipAccountViewModel :
 
     var username: Pair<MutableLiveData<String>, MutableLiveData<Boolean>> =
         Pair(MutableLiveData(), MutableLiveData<Boolean>(false))
+    var authId: Pair<MutableLiveData<String>, MutableLiveData<Boolean>> =
+        Pair(MutableLiveData(), MutableLiveData<Boolean>(false))
     var domain: Pair<MutableLiveData<String>, MutableLiveData<Boolean>> =
         Pair(MutableLiveData(), MutableLiveData<Boolean>(false))
     var pass1: Pair<MutableLiveData<String>, MutableLiveData<Boolean>> =
@@ -52,6 +54,6 @@ class LoginSipAccountViewModel :
 
     fun valid(): Boolean {
 
-        return username.second.value!! && domain.second.value!! && pass1.second.value!! && proxy.second.value!! && expiration.second.value!!
+        return username.second.value!! && authId.second.value!! && domain.second.value!! && pass1.second.value!! && proxy.second.value!! && expiration.second.value!!
     }
 }

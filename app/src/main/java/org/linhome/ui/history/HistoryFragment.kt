@@ -30,9 +30,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.fragment_history.view.*
-import kotlinx.android.synthetic.main.widget_round_rect_button.view.*
+import org.linhome.synthetic.app_bar_main.*
+import org.linhome.synthetic.fragment_history.view.*
+import org.linhome.synthetic.widget_round_rect_button.view.*
 import org.linhome.GenericFragment
 import org.linhome.LinhomeApplication.Companion.coreContext
 import org.linhome.customisation.Texts

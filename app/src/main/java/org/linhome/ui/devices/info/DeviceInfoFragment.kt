@@ -25,7 +25,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
-import kotlinx.android.synthetic.main.app_bar_main.*
+import org.linhome.synthetic.app_bar_main.*
 import org.linhome.GenericFragment
 import org.linhome.customisation.Texts
 import org.linhome.customisation.Theme

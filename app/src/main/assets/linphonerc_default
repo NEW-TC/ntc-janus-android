@@ -2,7 +2,7 @@
 ## Start of default rc
 
 [sip]
-contact="Linphone Android" <sip:linphone.android@unknown-host>
+contact="NTC Janus" <sip:janus@unknown-host>
 use_info=0
 keepalive_period=30000
 sip_port=-1
@@ -22,15 +22,15 @@ size=vga
 tunnel=disabled
 push_notification=1
 auto_start=1
-debug=1
+debug=0
 
 [tunnel]
 host=
 port=443
 
 [misc]
-version_check_url_root=https://www.linphone.org/releases
-log_collection_upload_server_url=https://www.linphone.org:444/lft.php
+version_check_url_root=
+log_collection_upload_server_url=
 history_max_size=100
 
 

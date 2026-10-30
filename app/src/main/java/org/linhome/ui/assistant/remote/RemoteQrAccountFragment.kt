@@ -27,7 +27,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.fragment_assistant_remote_qr.view.*
+import org.linhome.synthetic.fragment_assistant_remote_qr.view.*
 import org.linhome.GenericFragment
 import org.linhome.LinhomeApplication.Companion.coreContext
 import org.linhome.R
@@ -66,6 +66,7 @@ class RemoteQrAccountFragment : GenericFragment() {
                         startScanner()
                     })
                 }
+                else -> {}
             }
         })
         model.pushReady.observe(viewLifecycleOwner, Observer { status ->
@@ -94,8 +95,8 @@ class RemoteQrAccountFragment : GenericFragment() {
         coreContext.core.reloadVideoDevices()
         setBackCamera()
         coreContext.core.nativePreviewWindowId = binding.qrcode
-        coreContext.core.enableQrcodeVideoPreview(true)
-        coreContext.core.enableVideoPreview(true)
+        coreContext.core.isQrcodeVideoPreviewEnabled = true
+        coreContext.core.isVideoPreviewEnabled = true
     }
 
     override fun onResume() {
@@ -119,8 +120,8 @@ class RemoteQrAccountFragment : GenericFragment() {
 
     override fun onPause() {
         coreContext.core.nativePreviewWindowId = null
-        coreContext.core.enableQrcodeVideoPreview(false)
-        coreContext.core.enableVideoPreview(false)
+        coreContext.core.isQrcodeVideoPreviewEnabled = false
+        coreContext.core.isVideoPreviewEnabled = false
         super.onPause()
     }
 

@@ -26,8 +26,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.fragment_assistant_login_sip.view.*
-import kotlinx.android.synthetic.main.widget_round_rect_button_with_icon.view.*
+import org.linhome.synthetic.fragment_assistant_login_sip.view.*
+import org.linhome.synthetic.widget_round_rect_button_with_icon.view.*
 import org.linhome.R
 import org.linhome.databinding.FragmentAssistantLoginSipBinding
 import org.linhome.entities.Account
@@ -56,7 +56,10 @@ class LoginSipAccountFragment : CreatorAssistantFragment() {
         }
 
         binding.root.loginsip.root.setOnClickListener {
+            normalizeSipId(model)
+            binding.executePendingBindings()
             binding.root.username.validate()
+            binding.root.auth_id.validate()
             binding.root.password.validate()
             binding.root.domain.validate()
             binding.root.proxy.validate()
@@ -72,6 +75,7 @@ class LoginSipAccountFragment : CreatorAssistantFragment() {
                     model.accountCreator,
                     model.proxy.first.value,
                     model.expiration.first.value!!,
+                    model.authId.first.value!!.trim(),
                     model.pushReady
                 )
             }
@@ -86,5 +90,22 @@ class LoginSipAccountFragment : CreatorAssistantFragment() {
         })
 
         return binding.root
+    }
+
+    /**
+     * SIP ID можно вводить в любом виде: "user", "user@server" или "sip:user@server".
+     * Префикс sip:/sips: отбрасывается, а часть после @ переносится в поле «Сервер», если оно пустое.
+     */
+    private fun normalizeSipId(model: LoginSipAccountViewModel) {
+        var value = model.username.first.value?.trim() ?: return
+        value = value.replace(Regex("^(?i)sips?:"), "")
+        val at = value.indexOf('@')
+        if (at >= 0) {
+            val server = value.substring(at + 1).trim()
+            value = value.substring(0, at)
+            if (server.isNotEmpty() && model.domain.first.value.isNullOrBlank())
+                model.domain.first.value = server
+        }
+        model.username.first.value = value
     }
 }

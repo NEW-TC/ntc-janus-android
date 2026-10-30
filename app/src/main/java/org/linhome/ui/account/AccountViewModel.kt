@@ -26,13 +26,17 @@ import org.linhome.LinhomeApplication
 import org.linhome.customisation.Texts
 import org.linhome.entities.Account
 import org.linhome.linphonecore.extensions.toHumanReadable
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import org.linphone.core.*
 
 class AccountViewModel : ViewModel() {
     val account = Account.get()
     val pushGw = Account.pushGateway()
-    val accountDesc = MutableLiveData(getDescription("account_info",account))
-    val pushGWDesc = MutableLiveData(getDescription("push_account_info",pushGw))
+    val accountDesc = MutableLiveData<CharSequence?>(getDescription("account_info",account))
+    val pushGWDesc = MutableLiveData<CharSequence?>(getDescription("push_account_info",pushGw))
 
     private val coreListener = object : CoreListenerStub() {
         override fun onRegistrationStateChanged(
@@ -65,14 +69,28 @@ class AccountViewModel : ViewModel() {
     }
 
 
-    fun getDescription(key:String, proxyConfig: ProxyConfig?): String? {
-        return proxyConfig?.state?.toHumanReadable()?.let {
-            proxyConfig?.identityAddress?.asStringUriOnly()?.let { it1 ->
-                Texts.get(key, it1,
-                    it
-                )
-            }
-        } ?: Texts.get("no_account_configured")
+    // Цветная точка перед статусом: зелёная - подключено, красная - ошибка, жёлтая - подключение.
+    private fun statusColor(state: RegistrationState?): Int = when (state) {
+        RegistrationState.Ok -> 0xFF2E9E4F.toInt()
+        RegistrationState.Failed -> 0xFFD32F2F.toInt()
+        RegistrationState.Progress, RegistrationState.Refreshing -> 0xFFF0A000.toInt()
+        else -> 0xFF9E9E9E.toInt()
+    }
+
+    fun getDescription(key:String, proxyConfig: ProxyConfig?): CharSequence? {
+        val state = proxyConfig?.state
+        val identity = proxyConfig?.identityAddress?.asStringUriOnly()
+        if (state == null || identity == null)
+            return Texts.get("no_account_configured")
+        val dot = "●"
+        val text = Texts.get(key, identity, "$dot ${state.toHumanReadable()}")
+        val spannable = SpannableString(text)
+        val index = text.lastIndexOf(dot)
+        if (index >= 0) {
+            spannable.setSpan(ForegroundColorSpan(statusColor(state)), index, index + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannable.setSpan(RelativeSizeSpan(1.4f), index, index + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+        return spannable
     }
 
 

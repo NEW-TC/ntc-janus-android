@@ -24,8 +24,8 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.activity_call_incoming.view.*
-import kotlinx.android.synthetic.main.chunk_call_device_icon_or_video.view.*
+import org.linhome.synthetic.activity_call_incoming.view.*
+import org.linhome.synthetic.chunk_call_device_icon_or_video.view.*
 import org.linhome.LinhomeApplication.Companion.coreContext
 import org.linhome.R
 import org.linhome.databinding.ActivityCallIncomingBinding

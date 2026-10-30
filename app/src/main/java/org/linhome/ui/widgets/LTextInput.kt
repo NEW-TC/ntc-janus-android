@@ -28,7 +28,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
-import kotlinx.android.synthetic.main.widget_text_input.view.*
+import org.linhome.synthetic.widget_text_input.view.*
 import org.linhome.R
 import org.linhome.customisation.Texts
 import org.linhome.databinding.WidgetTextInputBinding

@@ -29,8 +29,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_device_info.view.*
-import kotlinx.android.synthetic.main.fragment_devices.view.*
+import org.linhome.synthetic.fragment_device_info.view.*
+import org.linhome.synthetic.fragment_devices.view.*
 import org.linhome.GenericFragment
 import org.linhome.LinhomeApplication
 import org.linhome.databinding.FragmentDevicesBinding

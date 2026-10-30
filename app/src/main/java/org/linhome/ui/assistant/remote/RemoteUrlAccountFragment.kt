@@ -26,9 +26,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.fragment_assistant_remote_url.*
-import kotlinx.android.synthetic.main.fragment_assistant_remote_url.view.*
-import kotlinx.android.synthetic.main.widget_round_rect_button.view.*
+import org.linhome.synthetic.fragment_assistant_remote_url.*
+import org.linhome.synthetic.fragment_assistant_remote_url.view.*
+import org.linhome.synthetic.widget_round_rect_button.view.*
 import org.linhome.GenericFragment
 import org.linhome.R
 import org.linhome.databinding.FragmentAssistantRemoteUrlBinding
@@ -72,6 +72,7 @@ class RemoteUrlAccountFragment : GenericFragment() {
                 ConfiguringState.Skipped -> {
                     DialogUtil.error("remote_configuration_failed")
                 }
+                else -> {}
             }
         })
 

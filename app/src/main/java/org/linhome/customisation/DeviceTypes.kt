@@ -50,6 +50,10 @@ object DeviceTypes {
         }
     }
 
+    fun isValidType(typeKey: String): Boolean {
+        return deviceTypes.any { it.backingKey == typeKey }
+    }
+
     fun iconNameForDeviceType(typeKey: String, circle: Boolean = false): String? {
         return deviceTypesConfig.let { config ->
             config.getString(typeKey, "icon" + (if (circle) "_circle" else ""), null)

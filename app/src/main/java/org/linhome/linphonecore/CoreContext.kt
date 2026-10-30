@@ -27,8 +27,6 @@ import android.media.AudioManager
 import android.os.Handler
 import android.os.Looper
 import android.os.Vibrator
-import android.telephony.PhoneStateListener
-import android.telephony.TelephonyManager
 import android.util.TypedValue
 import android.view.*
 import kotlinx.coroutines.Dispatchers
@@ -71,30 +69,6 @@ class CoreContext(val context: Context, coreConfig: Config) {
         NotificationsManager(context)
     }
 
-    private var gsmCallActive = false
-    private val phoneStateListener = object : PhoneStateListener() {
-        override fun onCallStateChanged(state: Int, phoneNumber: String?) {
-            gsmCallActive = when (state) {
-                TelephonyManager.CALL_STATE_OFFHOOK -> {
-                    Log.i("[Context] Phone state is off hook")
-                    true
-                }
-                TelephonyManager.CALL_STATE_RINGING -> {
-                    Log.i("[Context] Phone state is ringing")
-                    true
-                }
-                TelephonyManager.CALL_STATE_IDLE -> {
-                    Log.i("[Context] Phone state is idle")
-                    false
-                }
-                else -> {
-                    Log.w("[Context] Phone state is unexpected: $state")
-                    false
-                }
-            }
-        }
-    }
-
     private var overlayX = 0f
     private var overlayY = 0f
     private var callOverlay: View? = null
@@ -122,12 +96,6 @@ class CoreContext(val context: Context, coreConfig: Config) {
                     call.decline(Reason.Busy)
                     return
                     }
-
-                if (gsmCallActive) {
-                    Log.w("[Context] Refusing the call with reason busy because a GSM call is active")
-                    call.decline(Reason.Busy)
-                    return
-                }
 
                 if (core.callsNb == 1 && corePreferences.vibrateWhileIncomingCall) {
                     val audioManager =
@@ -219,20 +187,10 @@ class CoreContext(val context: Context, coreConfig: Config) {
         core.start()
 
         configureCore()
-
-        val telephonyManager =
-            context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        Log.i("[Context] Registering notification_phone state listener")
-        telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE)
     }
 
     fun stop() {
         Log.i("[Context] Stopping")
-
-        val telephonyManager =
-            context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        Log.i("[Context] Unregistering notification_phone state listener")
-        telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE)
 
         notificationsManager.destroy()
 
@@ -255,8 +213,11 @@ class CoreContext(val context: Context, coreConfig: Config) {
     }
 
     private fun computeUserAgent() {
+        // SIP-заголовок User-Agent допускает только ASCII: кириллица в названии приложения
+        // или имени устройства ломает разбор заголовка и останавливает ядро (provisioning падает).
         val deviceName: String = corePreferences.deviceName
-        val appName: String = context.resources.getString(R.string.app_name)
+            .replace(Regex("[^A-Za-z0-9 ._-]"), "").trim().ifEmpty { "Android" }
+        val appName = "NTC-Janus"
         val androidVersion = org.linhome.BuildConfig.VERSION_NAME
         val userAgent = "$appName/$androidVersion ($deviceName) LinphoneSDK"
         val sdkVersion = context.getString(R.string.linphone_sdk_version)

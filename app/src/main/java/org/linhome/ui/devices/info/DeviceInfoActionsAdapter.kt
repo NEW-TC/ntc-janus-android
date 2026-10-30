@@ -26,9 +26,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_action_info.view.*
-import kotlinx.android.synthetic.main.item_sidemenu.view.icon
-import kotlinx.android.synthetic.main.item_sidemenu.view.label
+import org.linhome.synthetic.item_action_info.view.*
+import org.linhome.synthetic.item_sidemenu.view.icon
+import org.linhome.synthetic.item_sidemenu.view.label
 import org.linhome.R
 import org.linhome.customisation.ActionTypes
 import org.linhome.customisation.Theme

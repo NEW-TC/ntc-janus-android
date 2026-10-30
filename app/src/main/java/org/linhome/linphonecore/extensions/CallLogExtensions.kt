@@ -37,7 +37,7 @@ fun CallLog.historyEvent(): HistoryEvent {
         return historyEvent
     }
 
-    HistoryEventStore.findHistoryEventByCallId(callId)?.also {
+    callId?.let { HistoryEventStore.findHistoryEventByCallId(it) }?.also {
         return it
     }
 

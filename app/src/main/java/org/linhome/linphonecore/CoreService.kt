@@ -48,7 +48,7 @@ class CoreService : CoreService() {
         // Done elsewhere
     }
 
-    override fun showForegroundServiceNotification() {
+    override fun showForegroundServiceNotification(isVideoCall: Boolean) {
         coreContext.notificationsManager.startCallForeground(this)
     }
 

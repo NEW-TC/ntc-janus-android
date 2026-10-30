@@ -1,0 +1,40 @@
+package org.linhome.synthetic.fragment_device_edit
+
+import android.app.Activity
+import android.app.Dialog
+import android.view.View
+import androidx.fragment.app.Fragment
+
+val Activity.actions get() = findViewById<android.widget.LinearLayout>(org.linhome.R.id.actions)
+val Dialog.actions get() = findViewById<android.widget.LinearLayout>(org.linhome.R.id.actions)
+val Fragment.actions get() = requireView().findViewById<android.widget.LinearLayout>(org.linhome.R.id.actions)
+val Activity.addaction get() = findViewById<org.linhome.ui.widgets.LRoundRectButtonWithIcon>(org.linhome.R.id.addaction)
+val Dialog.addaction get() = findViewById<org.linhome.ui.widgets.LRoundRectButtonWithIcon>(org.linhome.R.id.addaction)
+val Fragment.addaction get() = requireView().findViewById<org.linhome.ui.widgets.LRoundRectButtonWithIcon>(org.linhome.R.id.addaction)
+val Activity.address get() = findViewById<org.linhome.ui.widgets.LTextInput>(org.linhome.R.id.address)
+val Dialog.address get() = findViewById<org.linhome.ui.widgets.LTextInput>(org.linhome.R.id.address)
+val Fragment.address get() = requireView().findViewById<org.linhome.ui.widgets.LTextInput>(org.linhome.R.id.address)
+val Activity.delete get() = findViewById<org.linhome.ui.widgets.LRoundRectButton>(org.linhome.R.id.delete)
+val Dialog.delete get() = findViewById<org.linhome.ui.widgets.LRoundRectButton>(org.linhome.R.id.delete)
+val Fragment.delete get() = requireView().findViewById<org.linhome.ui.widgets.LRoundRectButton>(org.linhome.R.id.delete)
+val Activity.devicetype get() = findViewById<org.linhome.ui.widgets.LSpinner>(org.linhome.R.id.devicetype)
+val Dialog.devicetype get() = findViewById<org.linhome.ui.widgets.LSpinner>(org.linhome.R.id.devicetype)
+val Fragment.devicetype get() = requireView().findViewById<org.linhome.ui.widgets.LSpinner>(org.linhome.R.id.devicetype)
+val Activity.method get() = findViewById<org.linhome.ui.widgets.LSpinner>(org.linhome.R.id.method)
+val Dialog.method get() = findViewById<org.linhome.ui.widgets.LSpinner>(org.linhome.R.id.method)
+val Fragment.method get() = requireView().findViewById<org.linhome.ui.widgets.LSpinner>(org.linhome.R.id.method)
+val Activity.name get() = findViewById<org.linhome.ui.widgets.LTextInput>(org.linhome.R.id.name)
+val Dialog.name get() = findViewById<org.linhome.ui.widgets.LTextInput>(org.linhome.R.id.name)
+val Fragment.name get() = requireView().findViewById<org.linhome.ui.widgets.LTextInput>(org.linhome.R.id.name)
+val Activity.select_method_section_title get() = findViewById<android.widget.TextView>(org.linhome.R.id.select_method_section_title)
+val Dialog.select_method_section_title get() = findViewById<android.widget.TextView>(org.linhome.R.id.select_method_section_title)
+val Fragment.select_method_section_title get() = requireView().findViewById<android.widget.TextView>(org.linhome.R.id.select_method_section_title)
+val Activity.select_type_section_title get() = findViewById<android.widget.TextView>(org.linhome.R.id.select_type_section_title)
+val Dialog.select_type_section_title get() = findViewById<android.widget.TextView>(org.linhome.R.id.select_type_section_title)
+val Fragment.select_type_section_title get() = requireView().findViewById<android.widget.TextView>(org.linhome.R.id.select_type_section_title)
+val Activity.title get() = findViewById<android.widget.TextView>(org.linhome.R.id.title)
+val Dialog.title get() = findViewById<android.widget.TextView>(org.linhome.R.id.title)
+val Fragment.title get() = requireView().findViewById<android.widget.TextView>(org.linhome.R.id.title)
+val Activity.your_device get() = findViewById<android.widget.TextView>(org.linhome.R.id.your_device)
+val Dialog.your_device get() = findViewById<android.widget.TextView>(org.linhome.R.id.your_device)
+val Fragment.your_device get() = requireView().findViewById<android.widget.TextView>(org.linhome.R.id.your_device)

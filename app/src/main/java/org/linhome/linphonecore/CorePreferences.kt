@@ -86,7 +86,7 @@ class CorePreferences constructor(private val context: Context) {
     /* App settings */
 
     var debugLogs: Boolean
-        get() = config.getBool("app", "debug", true)
+        get() = config.getBool("app", "debug", false)
         set(value) {
             config.setBool("app", "debug", value)
         }

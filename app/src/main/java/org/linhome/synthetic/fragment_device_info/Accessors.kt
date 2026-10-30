@@ -1,0 +1,40 @@
+package org.linhome.synthetic.fragment_device_info
+
+import android.app.Activity
+import android.app.Dialog
+import android.view.View
+import androidx.fragment.app.Fragment
+
+val Activity.actions_list get() = findViewById<android.view.View>(org.linhome.R.id.actions_list)
+val Dialog.actions_list get() = findViewById<android.view.View>(org.linhome.R.id.actions_list)
+val Fragment.actions_list get() = requireView().findViewById<android.view.View>(org.linhome.R.id.actions_list)
+val Activity.actions_title get() = findViewById<android.widget.TextView>(org.linhome.R.id.actions_title)
+val Dialog.actions_title get() = findViewById<android.widget.TextView>(org.linhome.R.id.actions_title)
+val Fragment.actions_title get() = requireView().findViewById<android.widget.TextView>(org.linhome.R.id.actions_title)
+val Activity.address get() = findViewById<android.widget.TextView>(org.linhome.R.id.address)
+val Dialog.address get() = findViewById<android.widget.TextView>(org.linhome.R.id.address)
+val Fragment.address get() = requireView().findViewById<android.widget.TextView>(org.linhome.R.id.address)
+val Activity.call get() = findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(org.linhome.R.id.call)
+val Dialog.call get() = findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(org.linhome.R.id.call)
+val Fragment.call get() = requireView().findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(org.linhome.R.id.call)
+val Activity.device_image_card get() = findViewById<androidx.cardview.widget.CardView>(org.linhome.R.id.device_image_card)
+val Dialog.device_image_card get() = findViewById<androidx.cardview.widget.CardView>(org.linhome.R.id.device_image_card)
+val Fragment.device_image_card get() = requireView().findViewById<androidx.cardview.widget.CardView>(org.linhome.R.id.device_image_card)
+val Activity.device_image_tablet get() = findViewById<org.linhome.ui.widgets.LDeviceImageView>(org.linhome.R.id.device_image_tablet)
+val Dialog.device_image_tablet get() = findViewById<org.linhome.ui.widgets.LDeviceImageView>(org.linhome.R.id.device_image_tablet)
+val Fragment.device_image_tablet get() = requireView().findViewById<org.linhome.ui.widgets.LDeviceImageView>(org.linhome.R.id.device_image_tablet)
+val Activity.edit_device get() = findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(org.linhome.R.id.edit_device)
+val Dialog.edit_device get() = findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(org.linhome.R.id.edit_device)
+val Fragment.edit_device get() = requireView().findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(org.linhome.R.id.edit_device)
+val Activity.name get() = findViewById<android.widget.TextView>(org.linhome.R.id.name)
+val Dialog.name get() = findViewById<android.widget.TextView>(org.linhome.R.id.name)
+val Fragment.name get() = requireView().findViewById<android.widget.TextView>(org.linhome.R.id.name)
+val Activity.top_separator get() = findViewById<android.widget.RelativeLayout>(org.linhome.R.id.top_separator)
+val Dialog.top_separator get() = findViewById<android.widget.RelativeLayout>(org.linhome.R.id.top_separator)
+val Fragment.top_separator get() = requireView().findViewById<android.widget.RelativeLayout>(org.linhome.R.id.top_separator)
+val Activity.type_icon get() = findViewById<android.widget.ImageView>(org.linhome.R.id.type_icon)
+val Dialog.type_icon get() = findViewById<android.widget.ImageView>(org.linhome.R.id.type_icon)
+val Fragment.type_icon get() = requireView().findViewById<android.widget.ImageView>(org.linhome.R.id.type_icon)
+val Activity.type_name get() = findViewById<android.widget.TextView>(org.linhome.R.id.type_name)
+val Dialog.type_name get() = findViewById<android.widget.TextView>(org.linhome.R.id.type_name)
+val Fragment.type_name get() = requireView().findViewById<android.widget.TextView>(org.linhome.R.id.type_name)

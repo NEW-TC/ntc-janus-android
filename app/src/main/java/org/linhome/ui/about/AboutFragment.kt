@@ -27,7 +27,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_about.view.*
+import org.linhome.synthetic.fragment_about.view.*
 import org.linhome.LinhomeApplication
 import org.linhome.customisation.Texts
 import org.linhome.databinding.FragmentAboutBinding

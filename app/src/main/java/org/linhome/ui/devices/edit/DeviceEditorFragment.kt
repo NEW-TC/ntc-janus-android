@@ -30,10 +30,10 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
-import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.fragment_device_edit.view.*
-import kotlinx.android.synthetic.main.item_action_edit.view.*
-import kotlinx.android.synthetic.main.widget_round_rect_button.view.*
+import org.linhome.synthetic.app_bar_main.*
+import org.linhome.synthetic.fragment_device_edit.view.*
+import org.linhome.synthetic.item_action_edit.view.*
+import org.linhome.synthetic.widget_round_rect_button.view.*
 import org.linhome.GenericFragment
 import org.linhome.R
 import org.linhome.customisation.Texts

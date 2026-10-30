@@ -25,8 +25,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.fragment_assistant_login_linhome.view.*
-import kotlinx.android.synthetic.main.widget_round_rect_button.view.*
+import org.linhome.synthetic.fragment_assistant_login_linhome.view.*
+import org.linhome.synthetic.widget_round_rect_button.view.*
 import org.linhome.LinhomeApplication
 import org.linhome.LinhomeApplication.Companion.corePreferences
 import org.linhome.R

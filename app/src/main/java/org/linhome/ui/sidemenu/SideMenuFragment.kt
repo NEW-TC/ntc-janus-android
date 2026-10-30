@@ -29,8 +29,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_sidemenu.view.*
-import kotlinx.android.synthetic.main.item_sidemenu.view.*
+import org.linhome.synthetic.fragment_sidemenu.view.*
+import org.linhome.synthetic.item_sidemenu.view.*
 import org.linhome.MainActivity
 import org.linhome.R
 import org.linhome.customisation.Texts

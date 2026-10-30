@@ -29,7 +29,7 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import org.linhome.R
 import org.linhome.databinding.WidgetRoundRectButtonBinding
-import kotlinx.android.synthetic.main.widget_round_rect_button.view.*
+import org.linhome.synthetic.widget_round_rect_button.view.*
 
 
 

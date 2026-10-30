@@ -30,6 +30,10 @@ class ValidatorFactory {
         val numberNonEmptyOrValidValidator = RegExpFormatValidator("^[0-9]+$", "invalid_number")
         val sipUri =
             NonEmptyWithRegExpFormatValidator("^([^@]+)(?:@(.+))?$", "invalid_sip_uri")
+        // SIP ID: "user", "user@server" или "sip:user@server"; имя пользователя - буквы, цифры и . _ + -
+        val sipId = NonEmptyWithRegExpFormatValidator("^(?i:sips?:)?[A-Za-z0-9._+\\-]+(?:@[A-Za-z0-9.\\-]+)?$", "invalid_sip_id")
+        // Auth ID: любые символы кроме пробелов, ":" и "@"
+        val authId = NonEmptyWithRegExpFormatValidator("^[^\\s:@]+$", "invalid_auth_id")
         val actionCode = RegExpFormatValidator("^[0-9#*]+$", "invalid_action_code")
     }
 }

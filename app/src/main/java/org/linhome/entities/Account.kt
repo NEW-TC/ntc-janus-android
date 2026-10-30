@@ -55,80 +55,32 @@ object Account {
         accountCreator: AccountCreator,
         proxy: String?,
         expiration: String,
+        authId: String,
         pushReady: MutableLiveData<Boolean>
     ) {
         val proxyConfig: ProxyConfig? = accountCreator.createProxyConfig()
+        // AccountCreator формирует identity вида sip:user:user@domain; задаём явно sip:user@domain.
+        val cleanIdentity = coreContext.core.createAddress("sip:${accountCreator.username}@${accountCreator.domain}")
+        if (proxyConfig != null && cleanIdentity != null) {
+            proxyConfig.edit()
+            proxyConfig.identityAddress = cleanIdentity
+            proxyConfig.done()
+        }
+        // Auth ID (userid) отличается от SIP ID (username) на нашей ВАТС.
+        proxyConfig?.findAuthInfo()?.also {
+            it.userid = authId
+            coreContext.core.addAuthInfo(it)
+        }
         proxyConfig?.expires = expiration.toInt()
         if (!TextUtils.isEmpty(proxy)) {
             proxyConfig?.serverAddr = proxy
         }
-        if (pushGateway() != null)
-            linkProxiesWithPushGateway(pushReady)
-        else
-            createPushGateway(pushReady)
+        pushReady.value = true
     }
 
     fun pushGateway(): ProxyConfig? {
         return coreContext.core.getProxyConfigByIdkey(PUSH_GW_ID_KEY)
     }
-
-    fun createPushGateway(pushReady: MutableLiveData<Boolean>) {
-        coreContext.core.loadConfigFromXml(corePreferences.linhomeAccountDefaultValuesPath)
-
-
-        val xmlRpcSession = corePreferences.xmlRpcServerUrl?.let {
-            LinhomeApplication.coreContext.core.createXmlRpcSession(
-                it
-            )
-        }
-        val xmlRpcRequest =
-            xmlRpcSession?.createRequest(XmlRpcArgType.StringStruct, "create_push_account")
-        xmlRpcRequest?.addStringArg(coreContext.core.userAgent)
-        corePreferences.loginDomain?.let { xmlRpcRequest?.addStringArg(it) }
-        corePreferences.passwordAlgo?.let { xmlRpcRequest?.addStringArg(it) }
-
-        xmlRpcRequest?.addListener { request ->
-            val status = request.status
-            val responseValues = request.listResponse
-            if (request.status == XmlRpcStatus.Ok) {
-                val pushGw = coreContext.core.createProxyConfig()
-                pushGw.idkey = PUSH_GW_ID_KEY
-                pushGw.enableRegister(true)
-                pushGw.enablePublish(false)
-                pushGw.expires = 31536000
-                pushGw.serverAddr = "sips:${responseValues.get(1)};transport=tls"
-                pushGw.setRoutes(arrayOf(pushGw.serverAddr))
-                pushGw.isPushNotificationAllowed = true
-
-                coreContext.core.createAddress("sip:${responseValues.get(0)}@${responseValues.get(1)}")?.let {
-                    pushGw.setIdentityAddress(it)
-                }
-                val authInfo = Factory.instance().createAuthInfo(responseValues.get(0),responseValues.get(0),null,responseValues.get(2),responseValues.get(1),responseValues.get(1))
-                coreContext.core.addAuthInfo(authInfo)
-                coreContext.core.addProxyConfig(pushGw)
-                linkProxiesWithPushGateway(pushReady)
-            } else {
-                pushReady.value = false
-            }
-        }
-        if (xmlRpcRequest != null) {
-            xmlRpcSession?.sendRequest(xmlRpcRequest)
-        }
-
-
-    }
-
-    fun linkProxiesWithPushGateway(pushReady: MutableLiveData<Boolean>) {
-        pushGateway()?.also { pgw ->
-            coreContext.core.proxyConfigList.forEach {
-                if (it.idkey != PUSH_GW_ID_KEY) {
-                    it.dependency = pgw
-                }
-            }
-        }
-        pushReady.value = true
-    }
-
 
     fun disconnect() {
         coreContext.core.proxyConfigList.forEach {

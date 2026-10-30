@@ -30,5 +30,6 @@ fun RegistrationState.toHumanReadable():String {
         RegistrationState.Ok -> Texts.get("registration_state_ok")
         RegistrationState.Failed -> Texts.get("registration_state_failed")
         RegistrationState.Cleared -> Texts.get("registration_state_cleared")
+        RegistrationState.Refreshing -> Texts.get("registration_state_progress")
     }
 }

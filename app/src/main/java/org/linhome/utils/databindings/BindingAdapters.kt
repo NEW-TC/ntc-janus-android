@@ -35,9 +35,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.widget_round_rect_button.view.root
-import kotlinx.android.synthetic.main.widget_round_rect_button_with_icon.view.*
-import kotlinx.android.synthetic.main.widget_text_input.view.*
+import org.linhome.synthetic.widget_round_rect_button.view.root
+import org.linhome.synthetic.widget_round_rect_button_with_icon.view.*
+import org.linhome.synthetic.widget_text_input.view.*
 import org.linhome.LinhomeApplication
 import org.linhome.R
 import org.linhome.customisation.*

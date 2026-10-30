@@ -25,11 +25,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.fragment_settings.view.*
+import org.linhome.synthetic.fragment_settings.view.*
 import org.linhome.BR
 import org.linhome.GenericFragment
 import org.linhome.LinhomeApplication
@@ -40,6 +41,7 @@ import org.linhome.utils.DialogUtil
 import org.linphone.core.Core
 import org.linphone.core.PayloadType
 import org.linphone.core.tools.Log
+import java.io.File
 
 
 class SettingsFragment : GenericFragment() {
@@ -99,30 +101,7 @@ class SettingsFragment : GenericFragment() {
 
     val sendLogsListener = object : SettingListenerStub() {
         override fun onClicked() {
-            showProgress()
-            binding.root.send_logs.isEnabled = false
-            settingsViewModel.logUploadResult.observe(viewLifecycleOwner, Observer { result ->
-                when (result.first) {
-                    Core.LogCollectionUploadState.InProgress -> {
-                    }
-                    Core.LogCollectionUploadState.NotDelivered -> {
-                        hideProgress()
-                        binding.root.send_logs.isEnabled = true
-                        DialogUtil.error("log_upload_failed")
-                    }
-                    Core.LogCollectionUploadState.Delivered -> {
-                        hideProgress()
-                        binding.root.send_logs.isEnabled = true
-                        val clipboard =
-                            requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        val clip = ClipData.newPlainText("Logs url", result.second)
-                        clipboard.setPrimaryClip(clip)
-                        DialogUtil.toast("log_upload_success")
-                        shareUploadedLogsUrl(result.second)
-                    }
-                }
-            })
-            LinhomeApplication.coreContext.core.uploadLogCollection()
+            shareLogFile()
         }
     }
 
@@ -133,22 +112,30 @@ class SettingsFragment : GenericFragment() {
         }
     }
 
-    private fun shareUploadedLogsUrl(info: String) {
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.putExtra(
-            Intent.EXTRA_EMAIL,
-            arrayOf(Texts.get("support_email_android"))
+    // Журнал отправляется как файл через системное меню «Поделиться» (почта, мессенджер),
+    // без загрузки на внешний сервер.
+    private fun shareLogFile() {
+        val path = LinhomeApplication.coreContext.core.compressLogCollection()
+        val file = path?.let { File(it) }
+        if (file == null || !file.exists()) {
+            DialogUtil.error("log_send_no_logs")
+            return
+        }
+        val uri = FileProvider.getUriForFile(
+            requireContext(), requireContext().packageName + ".fileprovider", file
         )
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(Texts.get("support_email_android")))
         intent.putExtra(Intent.EXTRA_SUBJECT, "${Texts.appName} Logs")
-        intent.putExtra(Intent.EXTRA_TEXT, info)
+        intent.putExtra(Intent.EXTRA_STREAM, uri)
         intent.type = "application/zip"
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
         try {
-            startActivity(Intent.createChooser(intent, "Send mail..."))
+            startActivity(Intent.createChooser(intent, Texts.get("send_logs")))
         } catch (ex: ActivityNotFoundException) {
             Log.e(ex)
         }
     }
-
 
 }

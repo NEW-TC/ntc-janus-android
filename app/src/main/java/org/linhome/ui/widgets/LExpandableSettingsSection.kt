@@ -27,7 +27,7 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import kotlinx.android.synthetic.main.settings_widget_expandable.view.*
+import org.linhome.synthetic.settings_widget_expandable.view.*
 import org.linhome.BR
 import org.linhome.R
 import org.linhome.customisation.Texts

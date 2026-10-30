@@ -30,10 +30,10 @@ import android.widget.Spinner
 import android.widget.SpinnerAdapter
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
-import kotlinx.android.synthetic.main.item_sidemenu.view.bottom_separator
-import kotlinx.android.synthetic.main.item_sidemenu.view.icon
-import kotlinx.android.synthetic.main.item_sidemenu.view.label
-import kotlinx.android.synthetic.main.item_spinner.view.*
+import org.linhome.synthetic.item_sidemenu.view.bottom_separator
+import org.linhome.synthetic.item_sidemenu.view.icon
+import org.linhome.synthetic.item_sidemenu.view.label
+import org.linhome.synthetic.item_spinner.view.*
 import org.linhome.R
 import org.linhome.customisation.Texts
 import org.linhome.customisation.Theme

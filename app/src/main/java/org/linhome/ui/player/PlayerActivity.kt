@@ -29,8 +29,8 @@ import android.view.View.OnTouchListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.activity_player.view.*
-import kotlinx.android.synthetic.main.chunk_player_controls.view.*
+import org.linhome.synthetic.activity_player.view.*
+import org.linhome.synthetic.chunk_player_controls.view.*
 import org.linhome.GenericActivity
 import org.linhome.LinhomeApplication
 import org.linhome.R

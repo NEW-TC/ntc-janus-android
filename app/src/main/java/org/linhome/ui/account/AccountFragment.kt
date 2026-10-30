@@ -30,8 +30,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.fragment_account.view.*
-import kotlinx.android.synthetic.main.widget_round_rect_button.view.*
+import org.linhome.synthetic.fragment_account.view.*
+import org.linhome.synthetic.widget_round_rect_button.view.*
 import org.linhome.LinhomeApplication
 import org.linhome.databinding.FragmentAccountBinding
 import org.linhome.entities.Account
@@ -54,14 +54,6 @@ class AccountFragment : Fragment() {
             model.refreshRegisters()
         }
 
-        binding.root.change_linhome_password.root.setOnClickListener {
-            gotoFreeSip()
-        }
-
-        binding.root.delete_linhome_account.root.setOnClickListener {
-            gotoFreeSip()
-        }
-
         binding.root.disconnect.root.setOnClickListener {
             DialogUtil.confirm(
                 "menu_disconnect",
@@ -76,14 +68,4 @@ class AccountFragment : Fragment() {
         return binding.root
     }
 
-    fun gotoFreeSip() {
-        DialogUtil.confirm(
-            "account_manage_on_freesip_title",
-            "account_manage_on_freesip_message",
-            { _: DialogInterface, _: Int ->
-                val browserIntent =
-                    Intent(Intent.ACTION_VIEW, Uri.parse(LinhomeApplication.corePreferences.config.getString("assistant","freesip_url","https://subscribe.linhome.org/login")))
-                startActivity(browserIntent)
-            })
-    }
 }

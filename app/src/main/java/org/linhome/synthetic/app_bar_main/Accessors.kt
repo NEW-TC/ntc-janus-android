@@ -1,0 +1,40 @@
+package org.linhome.synthetic.app_bar_main
+
+import android.app.Activity
+import android.app.Dialog
+import android.view.View
+import androidx.fragment.app.Fragment
+
+val Activity.progress get() = findViewById<androidx.core.widget.ContentLoadingProgressBar>(org.linhome.R.id.progress)
+val Dialog.progress get() = findViewById<androidx.core.widget.ContentLoadingProgressBar>(org.linhome.R.id.progress)
+val Fragment.progress get() = requireView().findViewById<androidx.core.widget.ContentLoadingProgressBar>(org.linhome.R.id.progress)
+val Activity.toolbar get() = findViewById<androidx.appcompat.widget.Toolbar>(org.linhome.R.id.toolbar)
+val Dialog.toolbar get() = findViewById<androidx.appcompat.widget.Toolbar>(org.linhome.R.id.toolbar)
+val Fragment.toolbar get() = requireView().findViewById<androidx.appcompat.widget.Toolbar>(org.linhome.R.id.toolbar)
+val Activity.toolbar_back_button get() = findViewById<android.widget.ImageButton>(org.linhome.R.id.toolbar_back_button)
+val Dialog.toolbar_back_button get() = findViewById<android.widget.ImageButton>(org.linhome.R.id.toolbar_back_button)
+val Fragment.toolbar_back_button get() = requireView().findViewById<android.widget.ImageButton>(org.linhome.R.id.toolbar_back_button)
+val Activity.toolbar_burger_button get() = findViewById<android.widget.ImageButton>(org.linhome.R.id.toolbar_burger_button)
+val Dialog.toolbar_burger_button get() = findViewById<android.widget.ImageButton>(org.linhome.R.id.toolbar_burger_button)
+val Fragment.toolbar_burger_button get() = requireView().findViewById<android.widget.ImageButton>(org.linhome.R.id.toolbar_burger_button)
+val Activity.toolbar_left_button get() = findViewById<android.widget.RelativeLayout>(org.linhome.R.id.toolbar_left_button)
+val Dialog.toolbar_left_button get() = findViewById<android.widget.RelativeLayout>(org.linhome.R.id.toolbar_left_button)
+val Fragment.toolbar_left_button get() = requireView().findViewById<android.widget.RelativeLayout>(org.linhome.R.id.toolbar_left_button)
+val Activity.toolbar_left_button_image get() = findViewById<android.widget.ImageView>(org.linhome.R.id.toolbar_left_button_image)
+val Dialog.toolbar_left_button_image get() = findViewById<android.widget.ImageView>(org.linhome.R.id.toolbar_left_button_image)
+val Fragment.toolbar_left_button_image get() = requireView().findViewById<android.widget.ImageView>(org.linhome.R.id.toolbar_left_button_image)
+val Activity.toolbar_left_button_title get() = findViewById<android.widget.TextView>(org.linhome.R.id.toolbar_left_button_title)
+val Dialog.toolbar_left_button_title get() = findViewById<android.widget.TextView>(org.linhome.R.id.toolbar_left_button_title)
+val Fragment.toolbar_left_button_title get() = requireView().findViewById<android.widget.TextView>(org.linhome.R.id.toolbar_left_button_title)
+val Activity.toolbar_right_button get() = findViewById<android.widget.RelativeLayout>(org.linhome.R.id.toolbar_right_button)
+val Dialog.toolbar_right_button get() = findViewById<android.widget.RelativeLayout>(org.linhome.R.id.toolbar_right_button)
+val Fragment.toolbar_right_button get() = requireView().findViewById<android.widget.RelativeLayout>(org.linhome.R.id.toolbar_right_button)
+val Activity.toolbar_right_button_image get() = findViewById<android.widget.ImageView>(org.linhome.R.id.toolbar_right_button_image)
+val Dialog.toolbar_right_button_image get() = findViewById<android.widget.ImageView>(org.linhome.R.id.toolbar_right_button_image)
+val Fragment.toolbar_right_button_image get() = requireView().findViewById<android.widget.ImageView>(org.linhome.R.id.toolbar_right_button_image)
+val Activity.toolbar_right_button_title get() = findViewById<android.widget.TextView>(org.linhome.R.id.toolbar_right_button_title)
+val Dialog.toolbar_right_button_title get() = findViewById<android.widget.TextView>(org.linhome.R.id.toolbar_right_button_title)
+val Fragment.toolbar_right_button_title get() = requireView().findViewById<android.widget.TextView>(org.linhome.R.id.toolbar_right_button_title)
+val Activity.toolbar_title get() = findViewById<android.widget.TextView>(org.linhome.R.id.toolbar_title)
+val Dialog.toolbar_title get() = findViewById<android.widget.TextView>(org.linhome.R.id.toolbar_title)
+val Fragment.toolbar_title get() = requireView().findViewById<android.widget.TextView>(org.linhome.R.id.toolbar_title)

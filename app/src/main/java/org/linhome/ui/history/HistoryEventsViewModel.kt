@@ -103,7 +103,7 @@ class HistoryEventsViewModel(
         if (historyViewModel.selectedForDeletion.value!!.contains(callLog.callId))
             historyViewModel.selectedForDeletion.value!!.remove(callLog.callId)
         else
-            historyViewModel.selectedForDeletion.value!!.add(callLog.callId)
+            callLog.callId?.let { historyViewModel.selectedForDeletion.value!!.add(it) }
         historyViewModel.notifyDeleteSelectionListUpdated()
     }
 

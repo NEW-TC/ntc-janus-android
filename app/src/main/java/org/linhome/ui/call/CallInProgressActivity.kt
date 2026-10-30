@@ -29,8 +29,8 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.activity_call_in_progress.view.*
-import kotlinx.android.synthetic.main.chunk_call_device_icon_or_video.view.*
+import org.linhome.synthetic.activity_call_in_progress.view.*
+import org.linhome.synthetic.chunk_call_device_icon_or_video.view.*
 import org.linhome.LinhomeApplication.Companion.coreContext
 import org.linhome.R
 import org.linhome.databinding.ActivityCallInProgressBinding
@@ -72,6 +72,7 @@ class CallInProgressActivity : CallGenericActivity() {
             callViewModel.callState.observe(this, Observer { callState ->
                 when (callState) {
                     Call.State.End, Call.State.Released -> finish()
+                    else -> {}
                 }
             })
             binding.root.videotogglecollapsed.setOnClickListener {

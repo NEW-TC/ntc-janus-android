@@ -25,10 +25,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_assistant_create_linhome.view.*
-import kotlinx.android.synthetic.main.fragment_assistant_create_linhome.view.create
-import kotlinx.android.synthetic.main.fragment_assistant_root.view.*
-import kotlinx.android.synthetic.main.widget_round_rect_button.view.*
+import org.linhome.synthetic.fragment_assistant_root.view.*
+import org.linhome.synthetic.widget_round_rect_button.view.*
 import org.linhome.GenericFragment
 import org.linhome.R
 import org.linhome.databinding.FragmentAssistantRootBinding
@@ -44,12 +42,6 @@ class AssistantRootFragment : GenericFragment() {
     ): View? {
         val binding = FragmentAssistantRootBinding.inflate(inflater, container, false)
 
-        binding.root.create.root.setOnClickListener {
-            navigateToCompotent(R.id.navigation_assistant_create_linhome)
-        }
-        binding.root.use.root.setOnClickListener {
-            navigateToCompotent(R.id.navigation_assistant_login_linhome)
-        }
         binding.root.sip.root.setOnClickListener {
             navigateToCompotent(R.id.navigation_assistant_login_sip)
         }

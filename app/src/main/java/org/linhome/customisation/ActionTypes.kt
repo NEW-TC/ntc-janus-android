@@ -42,6 +42,10 @@ object ActionTypes {
         }
     }
 
+    fun isValidType(typeKey: String): Boolean {
+        return spinnerItems.any { it.backingKey == typeKey }
+    }
+
     fun typeNameForActionType(typeKey: String): String {
         return actionTypesConfig.let { config ->
             Texts.get(config.getString(typeKey, "textkey", nonNullDefault = typeKey))

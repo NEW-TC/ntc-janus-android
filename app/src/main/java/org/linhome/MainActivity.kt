@@ -21,6 +21,8 @@
 package org.linhome
 
 import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
@@ -28,9 +30,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.app_bar_main.view.*
-import kotlinx.android.synthetic.main.content_main.*
+import org.linhome.synthetic.app_bar_main.*
+import org.linhome.synthetic.app_bar_main.view.*
+import org.linhome.synthetic.content_main.*
 import org.linhome.customisation.Texts
 import org.linhome.customisation.Theme
 import org.linhome.databinding.ActivityMainBinding
@@ -60,6 +62,12 @@ class MainActivity : GenericActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         super.onCreate(savedInstanceState)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 4242)
+        }
 
         val decorView: View = window.decorView
         val uiOptions: Int = View.SYSTEM_UI_FLAG_VISIBLE
@@ -145,7 +153,7 @@ class MainActivity : GenericActivity() {
             navController.navigate(R.id.navigation_assistant_root)
         }
 
-        if (savedInstanceState != null && savedInstanceState?.getBoolean("history_opened")) {
+        if (savedInstanceState != null && savedInstanceState.getBoolean("history_opened")) {
             tabbar_history.performClick()
         }
 
@@ -241,8 +249,8 @@ class MainActivity : GenericActivity() {
                 "devices"
             )
             R.id.navigation_history -> Texts.get("history")
-            R.id.navigation_about -> Texts.get("about")
-            R.id.navigation_settings -> Texts.get("settings")
+            R.id.navigation_about -> Texts.get("menu_about")
+            R.id.navigation_settings -> Texts.get("menu_settings")
             R.id.navigation_account -> Texts.get("menu_account")
             else -> null
         }

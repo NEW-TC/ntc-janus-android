@@ -27,7 +27,7 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_sidemenu.view.*
+import org.linhome.synthetic.item_sidemenu.view.*
 import org.linhome.R
 import org.linhome.customisation.Texts
 import org.linhome.customisation.Theme
