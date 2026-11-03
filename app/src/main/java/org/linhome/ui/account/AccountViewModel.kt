@@ -69,14 +69,6 @@ class AccountViewModel : ViewModel() {
     }
 
 
-    // Цветная точка перед статусом: зелёная - подключено, красная - ошибка, жёлтая - подключение.
-    private fun statusColor(state: RegistrationState?): Int = when (state) {
-        RegistrationState.Ok -> 0xFF2E9E4F.toInt()
-        RegistrationState.Failed -> 0xFFD32F2F.toInt()
-        RegistrationState.Progress, RegistrationState.Refreshing -> 0xFFF0A000.toInt()
-        else -> 0xFF9E9E9E.toInt()
-    }
-
     fun getDescription(key:String, proxyConfig: ProxyConfig?): CharSequence? {
         val state = proxyConfig?.state
         val identity = proxyConfig?.identityAddress?.asStringUriOnly()
@@ -87,7 +79,7 @@ class AccountViewModel : ViewModel() {
         val spannable = SpannableString(text)
         val index = text.lastIndexOf(dot)
         if (index >= 0) {
-            spannable.setSpan(ForegroundColorSpan(statusColor(state)), index, index + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannable.setSpan(ForegroundColorSpan(AccountStatus.color(state)), index, index + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             spannable.setSpan(RelativeSizeSpan(1.4f), index, index + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
         return spannable

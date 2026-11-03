@@ -375,6 +375,16 @@
 		<entry name="ru">Auth ID не должен содержать пробелов, «:» и «@»</entry>
 	</section>
 
+	<section name="devices_sip_status_label">
+		<entry name="default">SIP connection:</entry>
+		<entry name="ru">SIP-соединение:</entry>
+	</section>
+
+	<section name="devices_no_account">
+		<entry name="default">No account configured</entry>
+		<entry name="ru">Аккаунт не настроен</entry>
+	</section>
+
 	<section name="auth_id">
 		<entry name="default">Auth ID</entry>
 		<entry name="ru">Auth ID</entry>

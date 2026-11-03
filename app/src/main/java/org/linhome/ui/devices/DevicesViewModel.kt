@@ -1,29 +1,18 @@
-/*
- * Copyright (c) 2010-2020 Belledonne Communications SARL.
- *
- * This file is part of linhome-android
- * (see https://www.linhome.org).
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
 package org.linhome.ui.devices
 
+import android.text.SpannableStringBuilder
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import org.linhome.LinhomeApplication.Companion.coreContext
+import org.linhome.customisation.Texts
+import org.linhome.entities.Account
 import org.linhome.entities.Device
 import org.linhome.store.DeviceStore
+import org.linhome.ui.account.AccountStatus
+import org.linphone.core.Core
+import org.linphone.core.CoreListenerStub
+import org.linphone.core.ProxyConfig
+import org.linphone.core.RegistrationState
 
 class DevicesViewModel : ViewModel() {
     val devices = MutableLiveData<ArrayList<Device>>().apply {
@@ -31,4 +20,34 @@ class DevicesViewModel : ViewModel() {
     }
     var selectedDevice = MutableLiveData<Device?>()
 
+    // Состояние SIP-регистрации над списком устройств: «SIP-соединение: ● Подключено» или «Аккаунт не настроен»
+    val accountStatus = MutableLiveData<CharSequence?>(describeStatus())
+
+    private val coreListener = object : CoreListenerStub() {
+        override fun onRegistrationStateChanged(
+            core: Core,
+            proxyConfig: ProxyConfig,
+            state: RegistrationState?,
+            message: String
+        ) {
+            accountStatus.postValue(describeStatus())
+        }
+    }
+
+    init {
+        coreContext.core.addListener(coreListener)
+    }
+
+    override fun onCleared() {
+        coreContext.core.removeListener(coreListener)
+        super.onCleared()
+    }
+
+    private fun describeStatus(): CharSequence {
+        val state = Account.get()?.state ?: return Texts.get("devices_no_account")
+        return SpannableStringBuilder()
+            .append(Texts.get("devices_sip_status_label"))
+            .append(" ")
+            .append(AccountStatus.dotted(state))
+    }
 }
