@@ -183,7 +183,8 @@ class CoreContext(val context: Context, coreConfig: Config) {
             Log.i("[Context] Push received, assume in background")
             core.enterBackground()
         }
-        core.config.setBool("net", "use_legacy_push_notification_params", true)
+        // Короткий формат параметров push (RFC 8599) вместо длинного legacy: меньше Contact
+        core.config.setBool("net", "use_legacy_push_notification_params", false)
         core.start()
 
         configureCore()

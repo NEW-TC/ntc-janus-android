@@ -23,6 +23,7 @@ package org.linhome.entities
 import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import org.linhome.LinhomeApplication
+import org.linhome.push.NtcPush
 import org.linhome.LinhomeApplication.Companion.coreContext
 import org.linhome.LinhomeApplication.Companion.corePreferences
 import org.linhome.linphonecore.CorePreferences
@@ -75,6 +76,7 @@ object Account {
         if (!TextUtils.isEmpty(proxy)) {
             proxyConfig?.serverAddr = proxy
         }
+        NtcPush.applyStoredToken()
         pushReady.value = true
     }
 

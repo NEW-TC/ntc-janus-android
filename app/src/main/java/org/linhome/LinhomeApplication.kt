@@ -28,6 +28,7 @@ import org.linhome.customisation.Texts
 import org.linhome.linphonecore.CoreContext
 import org.linhome.linphonecore.CorePreferences
 import org.linhome.linphonecore.extensions.forceSpeakerAudioRoute
+import org.linhome.push.NtcPush
 import org.linhome.store.DeviceStore
 import org.linphone.core.Factory
 import org.linphone.core.LogCollectionState
@@ -104,6 +105,7 @@ class LinhomeApplication : Application() {
         Customisation
         Texts
         ensureCoreExists(applicationContext)
+        NtcPush.start()
         DeviceStore
     }
 

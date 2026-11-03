@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Android 13+: incoming call and service notifications -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -115,6 +116,20 @@
             android:stopWithTask="false"
             android:label="@string/app_name" />
 
+
+        <!-- RuStore Push: идентификатор проекта (не секрет) и сервис приёма сообщений -->
+        <meta-data
+            android:name="ru.rustore.sdk.pushclient.project_id"
+            android:value="I6L9LS-7scScedquHMGXxiWUTwDalW5z" />
+
+        <service
+            android:name="org.linhome.push.NtcPushService"
+            android:exported="true"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="ru.rustore.sdk.pushclient.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <provider
             android:name="androidx.core.content.FileProvider"
