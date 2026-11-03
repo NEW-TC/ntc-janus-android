@@ -237,11 +237,16 @@ class NotificationsManager(private val context: Context) {
                 // When this method will be called, we won't have any notification yet
                 val call = coreContext.core.currentCall ?: coreContext.core.calls[0]
                 when (call.state) {
-                    Call.State.IncomingReceived, Call.State.IncomingEarlyMedia -> {
-                        //displayIncomingCallNotification(call, true)
-                    }
+                    // Входящий вызов: служба обязана перейти на передний план (Android 12+), иначе процесс будет убит
+                    Call.State.IncomingReceived, Call.State.IncomingEarlyMedia ->
+                        displayIncomingCallNotification(call, true)
                     else -> displayCallNotification(call, true)
                 }
+            }
+            else -> {
+                // Вызов уже завершился, а службу SDK запустил: показать служебное уведомление,
+                // иначе ForegroundServiceDidNotStartInTimeException
+                startForeground(coreService, false)
             }
         }
     }
