@@ -59,6 +59,28 @@ class MainActivity : GenericActivity() {
 
     var toobarButtonClickedListener: ToobarButtonClickedListener? = null
 
+    private var fullScreenAsked = false
+
+    /** Android 14+: без этого разрешения входящий звонок не включает экран и не открывается поверх блокировки. */
+    private fun askFullScreenIntent() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE || fullScreenAsked) return
+        val nm = getSystemService(android.app.NotificationManager::class.java)
+        if (nm.canUseFullScreenIntent()) return
+        fullScreenAsked = true
+        android.app.AlertDialog.Builder(this)
+            .setMessage("Чтобы входящий звонок включал экран и открывался поверх блокировки, разрешите «Полноэкранные уведомления» для этого приложения.")
+            .setPositiveButton("Открыть настройки") { _, _ ->
+                startActivity(
+                    android.content.Intent(
+                        android.provider.Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT,
+                        android.net.Uri.parse("package:$packageName")
+                    )
+                )
+            }
+            .setNegativeButton("Позже", null)
+            .show()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         super.onCreate(savedInstanceState)
@@ -68,6 +90,8 @@ class MainActivity : GenericActivity() {
         ) {
             requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 4242)
         }
+
+        askFullScreenIntent()
 
         val decorView: View = window.decorView
         val uiOptions: Int = View.SYSTEM_UI_FLAG_VISIBLE

@@ -43,7 +43,7 @@ class CallIncomingActivity : CallGenericActivity() {
 
         Compatibility.setShowWhenLocked(this, true)
         Compatibility.setTurnScreenOn(this, true)
-        Compatibility.requestDismissKeyguard(this)
+        // Не просим снять блокировку: звонок домофона должен приниматься поверх заблокированного экрана без PIN-кода
 
         binding = DataBindingUtil.setContentView(
             this,
