@@ -33,7 +33,7 @@ RU = {
 'assistant_remote_from_qr':'Настройка по QR-коду','assistant_remote_from_qr_desc':'Отсканируйте QR-код из личного кабинета.',
 'assistant_using_will_disconnect_title':'Аккаунт уже настроен',
 'assistant_using_will_disconnect_message':'Если продолжить, текущий аккаунт будет отключён. Продолжить?',
-'username':'SIP ID','auth_id':'Auth ID','devices_sip_status_label':'SIP-соединение:','devices_no_account':'Аккаунт не настроен','invalid_sip_id':'SIP ID: user, user@сервер или sip:user@сервер (только буквы, цифры и . _ + -)','invalid_auth_id':'Auth ID не должен содержать пробелов, «:» и «@»','email':'E-mail','password':'Пароль','password_confirmation':'Подтверждение пароля',
+'username':'SIP ID','auth_id':'Auth ID','invalid_proxy_address':'Прокси: host, host:порт или sips:host:порт','devices_sip_status_label':'SIP-соединение:','devices_no_account':'Аккаунт не настроен','invalid_sip_id':'SIP ID: user, user@сервер или sip:user@сервер (только буквы, цифры и . _ + -)','invalid_auth_id':'Auth ID не должен содержать пробелов, «:» и «@»','email':'E-mail','password':'Пароль','password_confirmation':'Подтверждение пароля',
 'create_account':'Создать аккаунт','login':'Войти','input_invalid_empty_field':'Обязательное поле',
 'input_invalid_format_uri':'Неверный формат URI','invalid_host_name':'Неверный формат адреса','invalid_number':'Неверный формат числа',
 'invalid_sip_uri':'Неверный формат SIP (sip: или sips:...)','invalid_action_code':'0-9 # *','action_type_missing':'Выберите действие',

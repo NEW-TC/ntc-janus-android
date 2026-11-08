@@ -53,8 +53,10 @@ object NtcPush {
     private val PUSH_PROXY_HOSTS = setOf("push.new-tc.ru")
 
     private fun usesPushProxy(proxyConfig: ProxyConfig): Boolean {
-        val host = proxyConfig.serverAddr?.let { Factory.instance().createAddress(it)?.domain } ?: return false
-        return host.lowercase() in PUSH_PROXY_HOSTS
+        val addresses = proxyConfig.routes.toList() + listOfNotNull(proxyConfig.serverAddr)
+        return addresses.any { address ->
+            Factory.instance().createAddress(address)?.domain?.lowercase() in PUSH_PROXY_HOSTS
+        }
     }
 
     /**

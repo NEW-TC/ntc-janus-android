@@ -26,6 +26,9 @@ class ValidatorFactory {
         val uriValidator = NonEmptyUrlFormatValidator()
         val hostnameEmptyOrValidValidator =
             RegExpFormatValidator("^[a-zA-Z0-9.]*$", "invalid_host_name")
+        // Прокси: пусто, "host", "host:порт", "sip:host:порт", "sips:host:порт", допустимы ;параметры (например ;transport=tls)
+        val proxyAddress = RegExpFormatValidator(
+            "^(?i:(?:sips?:)?[a-z0-9.\\-]+(?::[0-9]{1,5})?(?:;[a-z0-9_.=\\-]+)*)?$", "invalid_proxy_address")
         val numberEmptyOrValidValidator = RegExpFormatValidator("^[0-9]*$", "invalid_number")
         val numberNonEmptyOrValidValidator = RegExpFormatValidator("^[0-9]+$", "invalid_number")
         val sipUri =

@@ -385,6 +385,11 @@
 		<entry name="ru">Аккаунт не настроен</entry>
 	</section>
 
+	<section name="invalid_proxy_address">
+		<entry name="default">Proxy: host, host:port or sips:host:port</entry>
+		<entry name="ru">Прокси: host, host:порт или sips:host:порт</entry>
+	</section>
+
 	<section name="auth_id">
 		<entry name="default">Auth ID</entry>
 		<entry name="ru">Auth ID</entry>

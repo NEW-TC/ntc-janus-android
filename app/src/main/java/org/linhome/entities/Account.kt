@@ -74,10 +74,33 @@ object Account {
         }
         proxyConfig?.expires = expiration.toInt()
         if (!TextUtils.isEmpty(proxy)) {
-            proxyConfig?.serverAddr = proxy
+            // Исходящий прокси: пакеты идут на него, а адрес регистратора (домен аккаунта) не меняется
+            proxyConfig?.setRoutes(arrayOf(normalizeProxy(proxy!!, accountCreator.transport)))
         }
         NtcPush.applyStoredToken()
         pushReady.value = true
+    }
+
+    /**
+     * "host", "host:порт", "sip:host:порт", "sips:host:порт" (+ ";transport=tcp|tls|udp") -> "sip:host:порт;transport=...".
+     * Транспорт: sips: означает TLS, затем параметр ;transport=, иначе выбранный в форме.
+     */
+    fun normalizeProxy(input: String, selected: TransportType?): String {
+        var value = input.trim()
+        var transport = selected ?: TransportType.Udp
+        val sips = value.startsWith("sips:", ignoreCase = true)
+        value = value.replace(Regex("^(?i)sips?:"), "")
+        val params = value.substringAfter(';', "")
+        value = value.substringBefore(';')
+        Regex("(?i)transport=(udp|tcp|tls)").find(params)?.let {
+            transport = when (it.groupValues[1].lowercase()) {
+                "tcp" -> TransportType.Tcp
+                "tls" -> TransportType.Tls
+                else -> TransportType.Udp
+            }
+        }
+        if (sips) transport = TransportType.Tls
+        return "sip:$value;transport=${transport.name.lowercase()}"
     }
 
     fun pushGateway(): ProxyConfig? {
