@@ -78,6 +78,9 @@ object Account {
         params.isRegisterEnabled = true
         params.pushNotificationAllowed = true
         params.expires = expiration.toInt()
+        // Старые auth_info с тем же username (например, с прежним Auth ID) SDK подставляет в ответ на запрос
+        // авторизации по паре username+realm и получает 403 — удаляем их перед созданием.
+        removeAuthInfos(username)
         // Auth ID (userid) отличается от SIP ID (username) на нашей ВАТС.
         core.addAuthInfo(
             Factory.instance().createAuthInfo(username, authId, accountCreator.password, null, null, domain)
@@ -116,7 +119,13 @@ object Account {
         return coreContext.core.getProxyConfigByIdkey(PUSH_GW_ID_KEY)
     }
 
+    private fun removeAuthInfos(username: String) {
+        val core = coreContext.core
+        core.authInfoList.filter { it.username == username }.forEach { core.removeAuthInfo(it) }
+    }
+
     fun disconnect() {
+        val usernames = coreContext.core.accountList.mapNotNull { it.params.identityAddress?.username }
         coreContext.core.proxyConfigList.forEach {
             it.edit()
             it.expires = 0
@@ -124,6 +133,7 @@ object Account {
             it.done()
             coreContext.core.removeProxyConfig(it)
         }
+        usernames.forEach { removeAuthInfos(it) }
     }
 
 }
