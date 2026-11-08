@@ -14,7 +14,9 @@ import ru.rustore.sdk.pushclient.RuStorePushClient
  * Linphone SDK сам считает push-параметры только для Firebase, поэтому для RuStore они задаются вручную.
  */
 object NtcPush {
-    const val PROVIDER = "rustore"
+    // pn-provider в Contact: Flexisip принимает только fcm/apns, поэтому передаём "fcm"; токен при этом RuStore,
+    // адаптер на сервере отправляет его в RuStore (Firebase не используется).
+    const val PROVIDER = "fcm"
     private const val PARAM = "ru.newtc.janus"   // pn-param: идентификатор приложения
     private const val CFG_SECTION = "ntc_push"
     private const val CFG_TOKEN = "rustore_token"
