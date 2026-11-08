@@ -28,6 +28,7 @@ import org.linhome.LinhomeApplication.Companion.coreContext
 import org.linhome.LinhomeApplication.Companion.corePreferences
 import org.linhome.linphonecore.CorePreferences
 import org.linphone.core.*
+import org.linphone.core.tools.Log
 
 object Account {
 
@@ -59,24 +60,32 @@ object Account {
         authId: String,
         pushReady: MutableLiveData<Boolean>
     ) {
-        val proxyConfig: ProxyConfig? = accountCreator.createProxyConfig()
-        // AccountCreator формирует identity вида sip:user:user@domain; задаём явно sip:user@domain.
-        val cleanIdentity = coreContext.core.createAddress("sip:${accountCreator.username}@${accountCreator.domain}")
-        if (proxyConfig != null && cleanIdentity != null) {
-            proxyConfig.edit()
-            proxyConfig.identityAddress = cleanIdentity
-            proxyConfig.done()
-        }
+        // Аккаунт создаём напрямую через Account API: у AccountCreator/ProxyConfig маршрут (outbound proxy) не применяется.
+        val core = coreContext.core
+        val username = accountCreator.username ?: return
+        val domain = accountCreator.domain ?: return
+        val identity = core.createAddress("sip:$username@$domain") ?: return
+        val transport = accountCreator.transport ?: TransportType.Udp
+        // В Linphone SDK 5.4 соединение идёт на serverAddress, а маршрут (outbound proxy) задать отдельно нельзя
+        // (включение outbound proxy сбрасывает маршруты на serverAddress). Поэтому «Прокси» становится адресом сервера
+        // регистрации, а домен аккаунта (identity) остаётся прежним.
+        val serverText = if (!TextUtils.isEmpty(proxy)) normalizeProxy(proxy!!, transport)
+                         else "sip:$domain;transport=${transport.name.lowercase()}"
+        val server = core.createAddress(serverText) ?: return
+        val params = core.createAccountParams()
+        params.identityAddress = identity
+        params.serverAddress = server
+        params.isRegisterEnabled = true
+        params.pushNotificationAllowed = true
+        params.expires = expiration.toInt()
         // Auth ID (userid) отличается от SIP ID (username) на нашей ВАТС.
-        proxyConfig?.findAuthInfo()?.also {
-            it.userid = authId
-            coreContext.core.addAuthInfo(it)
-        }
-        proxyConfig?.expires = expiration.toInt()
-        if (!TextUtils.isEmpty(proxy)) {
-            // Исходящий прокси: пакеты идут на него, а адрес регистратора (домен аккаунта) не меняется
-            proxyConfig?.setRoutes(arrayOf(normalizeProxy(proxy!!, accountCreator.transport)))
-        }
+        core.addAuthInfo(
+            Factory.instance().createAuthInfo(username, authId, accountCreator.password, null, null, domain)
+        )
+        val account = core.createAccount(params)
+        core.addAccount(account)
+        core.defaultAccount = account
+        Log.i("[NtcLogin] identity=${identity.asStringUriOnly()} server=${server.asStringUriOnly()}")
         NtcPush.applyStoredToken()
         pushReady.value = true
     }
