@@ -40,9 +40,14 @@ object BackgroundSettings {
         val items = ArrayList<Pair<String, () -> Unit>>()
         if (autostartIntents().isNotEmpty())
             items.add("Автозапуск приложения" to { openFirst(activity, autostartIntents()) })
-        if (manufacturer.contains("xiaomi") || manufacturer.contains("redmi") || manufacturer.contains("poco"))
+        if (isXiaomi())
             items.add("Права: всплывающие окна и экран блокировки" to { openFirst(activity, listOf(miuiPermissionEditor(activity))) })
-        items.add("Экономия батареи: выберите «Не ограничивать»" to { openFirst(activity, listOf(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))) })
+        if (isXiaomi()) {
+            // MIUI: экран «Батарея» самого приложения (режим «Нет ограничений»); общий список оптимизации там пуст
+            items.add("Батарея приложения: выберите «Нет ограничений»" to { openFirst(activity, listOf(miuiBattery(activity), appDetails(activity))) })
+        } else {
+            items.add("Экономия батареи: выберите «Не ограничивать»" to { openFirst(activity, listOf(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))) })
+        }
         items.add("Настройки приложения" to { openFirst(activity, listOf(appDetails(activity))) })
 
         // Список (setItems) не показывается, если задан setMessage: объяснение выводим в собственном заголовке
@@ -86,6 +91,13 @@ object BackgroundSettings {
         )
         else -> emptyList()
     }
+
+    private fun isXiaomi() = manufacturer.contains("xiaomi") || manufacturer.contains("redmi") || manufacturer.contains("poco")
+
+    private fun miuiBattery(activity: Activity) =
+        Intent("miui.intent.action.HIDDEN_APPS_CONFIG_ACTIVITY")
+            .putExtra("package_name", activity.packageName)
+            .putExtra("package_label", activity.applicationInfo.loadLabel(activity.packageManager).toString())
 
     private fun component(pkg: String, cls: String) = Intent().setComponent(ComponentName(pkg, cls))
 
