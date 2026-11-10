@@ -54,6 +54,10 @@ class AccountFragment : Fragment() {
             model.refreshRegisters()
         }
 
+        binding.root.background_settings.root.setOnClickListener {
+            org.linhome.utils.BackgroundSettings.showDialog(requireActivity())
+        }
+
         binding.root.disconnect.root.setOnClickListener {
             DialogUtil.confirm(
                 "menu_disconnect",

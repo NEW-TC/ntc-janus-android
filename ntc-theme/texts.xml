@@ -770,6 +770,11 @@ SIP-соединение: {1}</entry>
 		<entry name="de">Push-Benachrichtigungskonto: {0} \n {1}</entry>
 	</section>
 	
+	<section name="background_settings">
+		<entry name="default">Background operation</entry>
+		<entry name="ru">Работа в фоне</entry>
+	</section>
+
 	<section name="refresh_registers">
 		<entry name="default">Refresh connection</entry>
 		<entry name="ru">Обновить соединение</entry>

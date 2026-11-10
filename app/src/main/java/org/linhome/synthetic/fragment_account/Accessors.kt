@@ -17,3 +17,6 @@ val Fragment.pushaccount get() = requireView().findViewById<android.widget.TextV
 val Activity.refresh_registers get() = findViewById<org.linhome.ui.widgets.LRoundRectButton>(org.linhome.R.id.refresh_registers)
 val Dialog.refresh_registers get() = findViewById<org.linhome.ui.widgets.LRoundRectButton>(org.linhome.R.id.refresh_registers)
 val Fragment.refresh_registers get() = requireView().findViewById<org.linhome.ui.widgets.LRoundRectButton>(org.linhome.R.id.refresh_registers)
+val Activity.background_settings get() = findViewById<org.linhome.ui.widgets.LRoundRectButton>(org.linhome.R.id.background_settings)
+val Dialog.background_settings get() = findViewById<org.linhome.ui.widgets.LRoundRectButton>(org.linhome.R.id.background_settings)
+val Fragment.background_settings get() = requireView().findViewById<org.linhome.ui.widgets.LRoundRectButton>(org.linhome.R.id.background_settings)

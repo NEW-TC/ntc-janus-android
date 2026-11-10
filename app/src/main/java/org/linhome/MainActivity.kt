@@ -92,6 +92,8 @@ class MainActivity : GenericActivity() {
         }
 
         askFullScreenIntent()
+        if (org.linhome.LinhomeApplication.coreContext.core.accountList.isNotEmpty())
+            org.linhome.utils.BackgroundSettings.promptOnce(this)
 
         val decorView: View = window.decorView
         val uiOptions: Int = View.SYSTEM_UI_FLAG_VISIBLE
