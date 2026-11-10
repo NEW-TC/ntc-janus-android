@@ -39,7 +39,7 @@ object BackgroundSettings {
     fun showDialog(activity: Activity) {
         val items = ArrayList<Pair<String, () -> Unit>>()
         if (autostartIntents().isNotEmpty())
-            items.add("Автозапуск приложения" to { openFirst(activity, autostartIntents()) })
+            items.add((if (isHonor()) "Запуск приложений (см. подсказку выше)" else "Автозапуск приложения") to { openFirst(activity, autostartIntents()) })
         if (isXiaomi())
             items.add("Права: всплывающие окна и экран блокировки" to { openFirst(activity, listOf(miuiPermissionEditor(activity))) })
         if (isXiaomi()) {
@@ -62,7 +62,8 @@ object BackgroundSettings {
                 setTypeface(typeface, android.graphics.Typeface.BOLD)
             })
             addView(android.widget.TextView(activity).apply {
-                text = "Чтобы звонки с вызывной панели приходили, когда приложение закрыто, на этом телефоне нужно разрешить автозапуск и работу в фоне. Выберите настройку:"
+                text = "Чтобы звонки с вызывной панели приходили, когда приложение закрыто, на этом телефоне нужно разрешить автозапуск и работу в фоне. Выберите настройку:" +
+                    (if (isHonor()) "\n\nHonor: Настройки → Батарея → Запуск приложений → «НТК Привратник»: отключите «Управлять автоматически» и включите «Автозапуск», «Косвенный запуск» и «Работа в фоне»." else "")
                 textSize = 15f
                 setPadding(0, (10 * density).toInt(), 0, 0)
             })
@@ -78,7 +79,15 @@ object BackgroundSettings {
         manufacturer.contains("xiaomi") || manufacturer.contains("redmi") || manufacturer.contains("poco") -> listOf(
             component("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity")
         )
-        manufacturer.contains("huawei") || manufacturer.contains("honor") -> listOf(
+        manufacturer.contains("honor") -> listOf(
+            // MagicOS: «Запуск приложений» (если имена экранов не совпали, откроется общий экран батареи)
+            component("com.hihonor.systemmanager", "com.hihonor.systemmanager.startupmgr.ui.StartupNormalAppListActivity"),
+            component("com.hihonor.systemmanager", "com.hihonor.systemmanager.appcontrol.activity.StartupAppControlActivity"),
+            component("com.huawei.systemmanager", "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity"),
+            component("com.huawei.systemmanager", "com.huawei.systemmanager.appcontrol.activity.StartupAppControlActivity"),
+            Intent(Settings.ACTION_BATTERY_SAVER_SETTINGS)
+        )
+        manufacturer.contains("huawei") -> listOf(
             component("com.huawei.systemmanager", "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity"),
             component("com.huawei.systemmanager", "com.huawei.systemmanager.appcontrol.activity.StartupAppControlActivity")
         )
@@ -91,6 +100,8 @@ object BackgroundSettings {
         )
         else -> emptyList()
     }
+
+    private fun isHonor() = manufacturer.contains("honor")
 
     private fun isXiaomi() = manufacturer.contains("xiaomi") || manufacturer.contains("redmi") || manufacturer.contains("poco")
 
