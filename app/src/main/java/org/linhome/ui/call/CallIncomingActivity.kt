@@ -31,6 +31,7 @@ import org.linhome.R
 import org.linhome.databinding.ActivityCallIncomingBinding
 import org.linphone.compatibility.Compatibility
 import org.linphone.core.Call
+import org.linhome.linphonecore.extensions.extendedAccept
 
 
 class CallIncomingActivity : CallGenericActivity() {
@@ -69,7 +70,24 @@ class CallIncomingActivity : CallGenericActivity() {
                 coreContext.core.nativeVideoWindowId = binding.root.videocollapsed
                 callViewModel.toggleVideoFullScreen()
             }
+            acceptIfRequested(intent, it)
         } ?: finish()
+    }
+
+    // «Принять» из уведомления: активность запущена напрямую, принимаем вызов здесь
+    private fun acceptIfRequested(intent: android.content.Intent?, c: Call) {
+        if (intent?.getBooleanExtra("answer", false) == true &&
+            (c.state == Call.State.IncomingReceived || c.state == Call.State.IncomingEarlyMedia)
+        ) {
+            intent.removeExtra("answer")
+            c.extendedAccept()
+        }
+    }
+
+    override fun onNewIntent(intent: android.content.Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        call?.let { acceptIfRequested(intent, it) }
     }
 
     override fun onResume() {

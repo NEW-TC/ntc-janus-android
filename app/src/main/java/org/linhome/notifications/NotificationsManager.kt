@@ -410,7 +410,7 @@ class NotificationsManager(private val context: Context) {
                 .setColor(ContextCompat.getColor(context, R.color.color_a))
                 .setFullScreenIntent(pendingIntent, true)
                 .addAction(getCallDeclineAction(notifiable.notificationId))
-                .addAction(getCallAnswerAction(notifiable.notificationId))
+                .addAction(getCallAnswerAction(notifiable.notificationId, call))
                 .setCustomContentView(fillIncomingRemoteViewsForCall(call, false))
                 .setCustomBigContentView(fillIncomingRemoteViewsForCall(call, false))
 
@@ -552,14 +552,16 @@ class NotificationsManager(private val context: Context) {
 
     /* Notifications actions */
 
-    private fun getCallAnswerAction(callId: Int): NotificationCompat.Action {
+    private fun getCallAnswerAction(callId: Int, call: Call): NotificationCompat.Action {
+        // Кнопка «Принять» открывает экран вызова напрямую (PendingIntent.getActivity): Android 12+ запрещает
+        // запуск активности из BroadcastReceiver по нажатию на уведомление. Сам вызов принимается внутри активности.
+        val answerIntent = Intent(context, CallIncomingActivity::class.java)
+        answerIntent.putExtra("callId", call.callLog.callId)
+        answerIntent.putExtra("answer", true)
+        answerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
-        val answerIntent = Intent(context, NotificationBroadcastReceiver::class.java)
-        answerIntent.action = INTENT_ANSWER_CALL_NOTIF_ACTION
-        answerIntent.putExtra(INTENT_NOTIF_ID, callId)
-
-        val answerPendingIntent = PendingIntent.getBroadcast(
-            context, callId, answerIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        val answerPendingIntent = PendingIntent.getActivity(
+            context, callId + 100000, answerIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         return NotificationCompat.Action.Builder(
