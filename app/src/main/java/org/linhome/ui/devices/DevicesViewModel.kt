@@ -32,6 +32,19 @@ class DevicesViewModel : ViewModel() {
         ) {
             accountStatus.postValue(describeStatus())
         }
+
+        // Аккаунт добавлен/удалён/сменён: обновляем статус сразу, а не только при смене регистрации
+        override fun onAccountAdded(core: Core, account: org.linphone.core.Account) {
+            accountStatus.postValue(describeStatus())
+        }
+
+        override fun onAccountRemoved(core: Core, account: org.linphone.core.Account) {
+            accountStatus.postValue(describeStatus())
+        }
+
+        override fun onDefaultAccountChanged(core: Core, account: org.linphone.core.Account?) {
+            accountStatus.postValue(describeStatus())
+        }
     }
 
     init {

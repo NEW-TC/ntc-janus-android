@@ -133,7 +133,9 @@ object Account {
             it.done()
             coreContext.core.removeProxyConfig(it)
         }
-        usernames.forEach { removeAuthInfos(it) }
+        // Учётные данные удаляем не сразу: для снятия регистрации на сервере (REGISTER с Expires: 0) нужна авторизация,
+        // иначе сервер отвечает 401 и контакт остаётся ещё на 24 часа (звонки продолжают приходить после выхода).
+        coreContext.handler.postDelayed({ usernames.forEach { removeAuthInfos(it) } }, 8000)
     }
 
 }
