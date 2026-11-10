@@ -78,21 +78,26 @@ class LinhomeApplication : Application() {
 
         }
 
+        /**
+         * Кодеки для нашей ВАТС: аудио только PCMU (первым), видео только H264. Применяется один раз на установку и
+         * один раз при обновлении (v2), дальше пользователь может менять кодеки в настройках.
+         */
         fun setDefaultCodecs() {
-            if (corePreferences.config.getBool("app","default_codec_set", false)) {
+            if (corePreferences.config.getBool("app","default_codec_set_v2", false)) {
                 return
             }
             corePreferences.config.setBool("app","default_codec_set", true)
+            corePreferences.config.setBool("app","default_codec_set_v2", true)
 
-            val defaultVideoActive = arrayOf("h264")
-            val defaultAudioActive = arrayOf("pcmu","pcma","opus")
-
-            coreContext.core.videoPayloadTypes.forEach {
-                it.enable(defaultVideoActive.contains(it.mimeType.toLowerCase()))
+            val core = coreContext.core
+            core.videoPayloadTypes.forEach {
+                it.enable(it.mimeType.equals("h264", ignoreCase = true))
             }
-            coreContext.core.audioPayloadTypes.forEach {
-                it.enable(defaultAudioActive.contains(it.mimeType.toLowerCase()))
-            }
+            // PCMU на первое место, остальные отключены
+            val audio = core.audioPayloadTypes
+            val ordered = audio.sortedBy { if (it.mimeType.equals("pcmu", ignoreCase = true)) 0 else 1 }
+            ordered.forEach { it.enable(it.mimeType.equals("pcmu", ignoreCase = true)) }
+            core.setAudioPayloadTypes(ordered.toTypedArray())
             corePreferences.config.sync()
         }
 
