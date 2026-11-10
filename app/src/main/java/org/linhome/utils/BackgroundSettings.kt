@@ -45,9 +45,25 @@ object BackgroundSettings {
         items.add("Экономия батареи: выберите «Не ограничивать»" to { openFirst(activity, listOf(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))) })
         items.add("Настройки приложения" to { openFirst(activity, listOf(appDetails(activity))) })
 
+        // Список (setItems) не показывается, если задан setMessage: объяснение выводим в собственном заголовке
+        val density = activity.resources.displayMetrics.density
+        val pad = (20 * density).toInt()
+        val header = android.widget.LinearLayout(activity).apply {
+            orientation = android.widget.LinearLayout.VERTICAL
+            setPadding(pad, pad, pad, (8 * density).toInt())
+            addView(android.widget.TextView(activity).apply {
+                text = "Работа в фоне"
+                textSize = 20f
+                setTypeface(typeface, android.graphics.Typeface.BOLD)
+            })
+            addView(android.widget.TextView(activity).apply {
+                text = "Чтобы звонки с вызывной панели приходили, когда приложение закрыто, на этом телефоне нужно разрешить автозапуск и работу в фоне. Выберите настройку:"
+                textSize = 15f
+                setPadding(0, (10 * density).toInt(), 0, 0)
+            })
+        }
         AlertDialog.Builder(activity)
-            .setTitle("Работа в фоне")
-            .setMessage("Чтобы звонки с вызывной панели приходили, когда приложение закрыто, на этом телефоне нужно разрешить автозапуск и работу в фоне. Выберите настройку:")
+            .setCustomTitle(header)
             .setItems(items.map { it.first }.toTypedArray()) { _, which -> items[which].second() }
             .setNegativeButton("Закрыть", null)
             .show()
