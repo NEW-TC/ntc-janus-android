@@ -39,9 +39,16 @@ class BootReceiver : BroadcastReceiver() {
         } else if (intent.action.equals(Intent.ACTION_BOOT_COMPLETED, ignoreCase = true)) {
             val autoStart = corePreferences.autoStart
             Log.i("[Boot Receiver] Device is starting, autoStart is $autoStart")
-            if (autoStart) {
-                serviceIntent.putExtra("StartForeground", true)
-                ContextCompat.startForegroundService(context, serviceIntent)
+            // Процесс уже поднят: Application.onCreate создаёт Core. Android 15+ запрещает стартовать foreground-сервис
+            // типа phoneCall из BOOT_COMPLETED (ForegroundServiceStartNotAllowedException), поэтому не стартуем его
+            // там; push (RuStore) разбудит приложение при звонке.
+            if (autoStart && android.os.Build.VERSION.SDK_INT < 35) {
+                try {
+                    serviceIntent.putExtra("StartForeground", true)
+                    ContextCompat.startForegroundService(context, serviceIntent)
+                } catch (e: Exception) {
+                    Log.e("[Boot Receiver] Не удалось запустить сервис при загрузке: $e")
+                }
             }
         }
     }
