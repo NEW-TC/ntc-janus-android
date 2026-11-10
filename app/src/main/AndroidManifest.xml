@@ -99,6 +99,7 @@
             android:exported="false" />
 
         <receiver android:name="org.linhome.linphonecore.BootReceiver"
+            android:enabled="@bool/boot_receiver_enabled"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

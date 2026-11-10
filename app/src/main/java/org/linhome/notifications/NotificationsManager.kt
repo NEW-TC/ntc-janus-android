@@ -257,7 +257,14 @@ class NotificationsManager(private val context: Context) {
             createServiceNotification(useAutoStartDescription)
         }
         currentForegroundServiceNotificationId = SERVICE_NOTIF_ID
-        coreService.startForeground(currentForegroundServiceNotificationId, serviceNotification)
+        try {
+            coreService.startForeground(currentForegroundServiceNotificationId, serviceNotification)
+        } catch (e: Exception) {
+            // Android 15+: тип phoneCall нельзя запускать при определённых условиях (например, процесс поднят после загрузки);
+            // не роняем приложение, звонок покажется уведомлением, push разбудит приложение снова
+            Log.e("[Notifications Manager] Не удалось перевести сервис на передний план: $e")
+            currentForegroundServiceNotificationId = 0
+        }
         service = coreService
     }
 
@@ -265,7 +272,12 @@ class NotificationsManager(private val context: Context) {
         if (currentForegroundServiceNotificationId == 0 && service != null) {
             Log.i("[Notifications Manager] Starting Service as foreground using call notification")
             currentForegroundServiceNotificationId = notificationId
-            service?.startForeground(currentForegroundServiceNotificationId, callNotification)
+            try {
+                service?.startForeground(currentForegroundServiceNotificationId, callNotification)
+            } catch (e: Exception) {
+                Log.e("[Notifications Manager] Не удалось перевести сервис на передний план для звонка: $e")
+                currentForegroundServiceNotificationId = 0
+            }
         }
     }
 
