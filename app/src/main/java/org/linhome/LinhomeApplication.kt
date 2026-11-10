@@ -106,6 +106,7 @@ class LinhomeApplication : Application() {
         Texts
         ensureCoreExists(applicationContext)
         NtcPush.start()
+        org.linhome.push.RegisterRefresh.schedulePeriodic(applicationContext)
         DeviceStore
     }
 

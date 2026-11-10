@@ -54,6 +54,14 @@ object NtcPush {
     /** Адреса прокси, через которые регистрируются push-аккаунты (наш Flexisip). На остальных (SBC) push-параметры не нужны и ломают регистрацию. */
     private val PUSH_PROXY_HOSTS = setOf("push.new-tc.ru")
 
+    /** Срок регистрации для push-режима: сервер всё равно держит контакт 24 часа (force-expires), просим то же. */
+    const val PUSH_EXPIRES = 86400
+
+    fun isPushHost(host: String?): Boolean = host != null && host.lowercase() in PUSH_PROXY_HOSTS
+
+    /** Есть ли аккаунт, зарегистрированный через push-прокси. */
+    fun hasPushAccount(): Boolean = coreContext.core.proxyConfigList.any { usesPushProxy(it) }
+
     private fun usesPushProxy(proxyConfig: ProxyConfig): Boolean {
         val addresses = proxyConfig.routes.toList() + listOfNotNull(proxyConfig.serverAddr)
         return addresses.any { address ->
@@ -73,6 +81,12 @@ object NtcPush {
             core.proxyConfigList.forEach { proxyConfig ->
                 val current = proxyConfig.pushNotificationConfig
                 if (usesPushProxy(proxyConfig)) {
+                    if (proxyConfig.expires != PUSH_EXPIRES) {
+                        proxyConfig.edit()
+                        proxyConfig.expires = PUSH_EXPIRES
+                        proxyConfig.done()
+                        changed = true
+                    }
                     if (token == null) return@forEach
                     if (current.provider == PROVIDER && current.prid == token && proxyConfig.isPushNotificationAllowed) return@forEach
                     val config = current.clone()

@@ -77,7 +77,7 @@ object Account {
         params.serverAddress = server
         params.isRegisterEnabled = true
         params.pushNotificationAllowed = true
-        params.expires = expiration.toInt()
+        params.expires = if (NtcPush.isPushHost(server.domain)) NtcPush.PUSH_EXPIRES else expiration.toInt()
         // Старые auth_info с тем же username (например, с прежним Auth ID) SDK подставляет в ответ на запрос
         // авторизации по паре username+realm и получает 403 — удаляем их перед созданием.
         removeAuthInfos(username)

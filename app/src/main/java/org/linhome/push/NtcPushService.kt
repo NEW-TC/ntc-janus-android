@@ -1,5 +1,8 @@
 package org.linhome.push
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.linhome.LinhomeApplication
 import org.linphone.mediastream.Log
 import ru.rustore.sdk.pushclient.messaging.model.RemoteMessage
@@ -20,6 +23,12 @@ class NtcPushService : RuStoreMessagingService() {
         val data = message.data
         Log.i("[RuStore Push] сообщение получено: type=${data["type"]}")
         LinhomeApplication.ensureCoreExists(applicationContext)
+        if (data["type"] == "register_wakeup") {
+            // Служебное пробуждение: только перерегистрация, без уведомления и экрана
+            Log.i("[RuStore Push] register_wakeup (ts=${data["ts"]}, ttl=${data["ttl"]})")
+            GlobalScope.launch(Dispatchers.Default) { RegisterRefresh.run("register_wakeup") }
+            return
+        }
         val callId = data["call_id"]
         LinhomeApplication.coreContext.handler.post {
             val core = LinhomeApplication.coreContext.core

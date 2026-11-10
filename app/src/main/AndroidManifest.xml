@@ -108,6 +108,15 @@
         </receiver>
 
 
+        <!-- Перерегистрация после обновления приложения и загрузки телефона (без foreground-службы) -->
+        <receiver android:name="org.linhome.push.RegisterEventReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
         <!-- Services -->
 
         <service

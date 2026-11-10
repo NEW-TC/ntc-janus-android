@@ -1,6 +1,7 @@
 package org.linhome.store
 
 import org.linhome.entities.Account
+import org.linhome.push.NtcPush
 import org.linphone.core.Core
 import org.linphone.core.TransportType
 import org.linphone.core.tools.Log
@@ -10,6 +11,7 @@ import org.linphone.core.tools.Log
  *   [ntc_account]
  *   proxy=sips:push.new-tc.ru:5061   (формат как в поле «Прокси»)
  *   transport=tls                    (udp | tcp | tls)
+ *   expires=86400                    (необязательно; по умолчанию 86400 — срок регистрации push-режима)
  * Если секции нет, аккаунт остаётся таким, как его создало ядро из proxy_0 (прямая регистрация, без push).
  * Домен аккаунта (identity) не меняется, соединение идёт на proxy. Секция после импорта удаляется.
  */
@@ -27,6 +29,7 @@ object AccountImporter {
             "tls" -> TransportType.Tls
             else -> null
         }
+        val expires = config.getString(SECTION, "expires", null)?.trim()?.toIntOrNull()?.takeIf { it > 0 } ?: NtcPush.PUSH_EXPIRES
         config.cleanSection(SECTION)
         if (proxy.isNullOrEmpty()) return false
 
@@ -40,12 +43,14 @@ object AccountImporter {
             config.sectionsNamesList.filter { it.startsWith("proxy_") }.forEach { section ->
                 config.setString(section, "reg_proxy", serverText)
                 config.setInt(section, "push_notification_allowed", 1)
+                config.setInt(section, "reg_expires", expires)
             }
             // Если аккаунты уже есть (повторная настройка), правим и их
             core.accountList.forEach { account ->
                 val params = account.params.clone()
                 params.serverAddress = server
                 params.pushNotificationAllowed = true
+                params.expires = expires
                 account.setParams(params)
             }
             removeStaleAuthSections(config)
