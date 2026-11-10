@@ -28,6 +28,7 @@ import kotlinx.coroutines.launch
 import org.linhome.LinhomeApplication.Companion.coreContext
 import org.linhome.entities.Account
 import org.linhome.push.NtcPush
+import org.linhome.store.AccountImporter
 import org.linhome.store.DeviceImporter
 import org.linphone.core.ConfiguringState
 import org.linphone.core.Core
@@ -46,6 +47,7 @@ class RemoteAnyAccountViewModel : ViewModel() {
         override fun onConfiguringStatus(core: Core, status: ConfiguringState, message: String?) {
             if (status == ConfiguringState.Successful) {
                 DeviceImporter.importFrom(core.config)
+                AccountImporter.applyFrom(core)
                 NtcPush.applyStoredToken()
                 pushReady.postValue(true)
             }
