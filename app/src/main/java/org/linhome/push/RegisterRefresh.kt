@@ -36,6 +36,7 @@ object RegisterRefresh {
 
     private const val PERIODIC_WORK = "ntc_register_periodic"
     private const val ONESHOT_WORK = "ntc_register_once"
+    private const val RETRY_WORK = "ntc_register_retry"
     private const val TIMEOUT_MS = 15_000L
     private val running = AtomicBoolean(false)
 
@@ -73,6 +74,11 @@ object RegisterRefresh {
             val ok = withTimeoutOrNull(timeoutMs) { done.await() } ?: false
             handler.post { coreContext.core.removeListener(listener) }
             Log.i("[Register Refresh] причина=$reason, push-аккаунт=${hasPush}, результат=${if (ok) "OK" else "нет"}, ${System.currentTimeMillis() - started} мс")
+            if (!ok && hasPush) {
+                // Например, нет сети в Doze: повторим, когда Android даст сеть (WorkManager с условием «есть сеть»)
+                Log.i("[Register Refresh] планирую повтор при появлении сети")
+                scheduleRetry(LinhomeApplication.instance.applicationContext)
+            }
             return ok
         } finally {
             running.set(false)
@@ -86,6 +92,16 @@ object RegisterRefresh {
             .setInputData(workDataOf("reason" to "periodic"))
             .build()
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(PERIODIC_WORK, ExistingPeriodicWorkPolicy.KEEP, request)
+    }
+
+    /** Повтор после неудачной перерегистрации: запускается, как только есть сеть, с нарастающей паузой. */
+    fun scheduleRetry(context: Context) {
+        val request = OneTimeWorkRequestBuilder<RegisterWorker>()
+            .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())
+            .setBackoffCriteria(androidx.work.BackoffPolicy.EXPONENTIAL, 1, TimeUnit.MINUTES)
+            .setInputData(workDataOf("reason" to "retry"))
+            .build()
+        WorkManager.getInstance(context).enqueueUniqueWork(RETRY_WORK, ExistingWorkPolicy.KEEP, request)
     }
 
     /** Разовая перерегистрация (после обновления приложения или загрузки телефона). */
@@ -117,8 +133,9 @@ object RegisterRefresh {
 class RegisterWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
         val reason = inputData.getString("reason") ?: "periodic"
-        RegisterRefresh.run(reason)
+        val ok = RegisterRefresh.run(reason)
         if (reason == "boot") RegisterRefresh.exitIfIdle()
-        return Result.success()
+        // Повторная задача: пока не получилось, WorkManager повторяет с нарастающей паузой (до 5 попыток)
+        return if (!ok && reason == "retry" && runAttemptCount < 5) Result.retry() else Result.success()
     }
 }
